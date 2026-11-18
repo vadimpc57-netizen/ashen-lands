@@ -25,6 +25,7 @@ body[data-we="fair"] #wfx{background:radial-gradient(ellipse at 50% 0%,rgba(255,
 .tnode{font:inherit;font-size:14px;color:var(--mut);background:var(--card2);border:1px solid var(--line);border-radius:10px;padding:6px 10px;cursor:pointer;opacity:.75;text-align:left}.tnode.can{color:var(--acc);border-color:var(--acc);opacity:1}.tnode.done{color:var(--grn);border-color:var(--grn);background:#12261a;opacity:1}.tnode.sel{box-shadow:0 0 0 2px var(--acc);opacity:1}
 .tgrp{display:inline-block;font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--mut);padding:6px 0}
 #netbar{position:fixed;top:0;left:0;right:0;z-index:60;display:flex;gap:8px;align-items:center;justify-content:space-between;padding:6px 12px;background:#14100d;border-bottom:1px solid var(--line);font-size:13px;color:var(--mut)}#netbar b{color:var(--acc)}#netbar .me{color:var(--grn)}#netbar button{font:inherit;font-size:12px;color:var(--acc);background:none;border:1px solid var(--acc);border-radius:8px;padding:2px 8px;cursor:pointer}body.wait #app .btn,body.wait #app .chip{opacity:.6}
+.ro{display:flex;align-items:center;gap:8px;padding:8px 0;border-top:1px solid var(--line);font-size:14px}.ro:first-child{border-top:0}.ro .rn{flex:1;min-width:0}.ro .rn b{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.ro .rn small{color:var(--mut)}.ro .ms{font-variant-numeric:tabular-nums;font-size:13px;white-space:nowrap}.ms.g{color:var(--grn)}.ms.y{color:#e0b43f}.ms.r{color:#e0553f}.ms.n{color:var(--mut)}#netbar .rb{cursor:pointer}
 .nin{width:100%;box-sizing:border-box;margin:6px 0;padding:10px;border-radius:10px;border:1px solid var(--line);background:var(--card2);color:inherit;font:inherit}
 .ar{display:flex;gap:10px;align-items:center;padding:8px 10px;border:1px solid var(--line);border-radius:10px;margin:6px 0;background:var(--card2)}.ar.lock{opacity:.6}.ar .ai{font-size:24px;width:30px;text-align:center}
 .wev{padding:9px 12px;border-radius:12px;margin:-2px 0 10px;border:1px solid var(--line);background:rgba(194,65,45,.1);border-color:rgba(194,65,45,.5)}
@@ -245,7 +246,7 @@ function toast(t) {
   clearTimeout(toast.t); toast.t = setTimeout(() => el.classList.remove('show'), 4200);
 }
 const Q = [];
-var NET = { on: false, role: null, srv: '', room: '', id: '', es: null, fx: [], seq: 0, pt: 0, msg: '', codeIn: '', online: null, wasMine: false, sq: Promise.resolve() };
+var NET = { on: false, role: null, srv: '', room: '', id: '', es: null, fx: [], seq: 0, pt: 0, msg: '', codeIn: '', online: null, wasMine: false, sq: Promise.resolve(), members: [], ready: new Set(), seen: new Set(), rtt: {}, names: {}, roster: [], rosterJson: '', hostMs: null, myMs: null, tm: null, tk: 0, roOpen: false };
 const q = e => { if (FX_ON) Q.push(e); if (NET.on && NET.role === 'host' && NET.fx.length < 60) NET.fx.push(e); };
 
 /* ========== ДАННЫЕ ========== */
@@ -2936,9 +2937,11 @@ function netStart(role, room, id) {
   if (NET.es) NET.es.close();
   const es = new EventSource(NET.srv + '/api/events?room=' + encodeURIComponent(room) + '&id=' + encodeURIComponent(id) + '&init=' + encodeURIComponent(tg && tg.initData || ''));
   NET.es = es;
-  es.onopen = () => { NET.msg = ''; netBar(); if (role === 'client') netSend({ t: 'hello' }); else netSchedule(); };
-  es.onerror = () => { NET.msg = 'переподключение…'; netBar(); };
+  NET.members = []; NET.ready = new Set(); NET.seen = new Set(); NET.rtt = {}; NET.names = {}; NET.roster = []; NET.rosterJson = ''; NET.hostMs = null; NET.myMs = null; NET.tk = 0;
+  es.onopen = () => { NET.msg = ''; netBar(); if (role === 'client') netSend({ t: 'hello', name: netMyName() }); else netSchedule(); };
+  es.onerror = () => { NET.msg = 'переподключение…'; NET.gotSnap = false; netBar(); };
   es.onmessage = e => { let m; try { m = JSON.parse(e.data); } catch (_) { return; } NET.role === 'host' ? netHostMsg(m) : netClientMsg(m); };
+  clearInterval(NET.tm); NET.tm = setInterval(netTick, 2500); netTick();
   lsSet('pz_srv', NET.srv); lsSet('pz_me', JSON.stringify({ role, room, id }));
   document.body.style.paddingTop = '38px'; render();
 }
@@ -2971,7 +2974,7 @@ async function netResume() {
   } catch (e) { NET.msg = 'Не вышло: ' + e.message; render(); }
 }
 function netLeave() {
-  if (NET.es) NET.es.close();
+  if (NET.es) NET.es.close(); clearInterval(NET.tm); NET.tm = null; NET.roOpen = false; { const m = document.getElementById('netmodal'); if (m) m.remove(); }
   NET.on = false; NET.role = null; NET.es = null; NET.room = ''; NET.msg = ''; document.body.style.paddingTop = ''; document.body.classList.remove('wait');
   const b = document.getElementById('netbar'); if (b) b.remove();
   try { localStorage.removeItem('pz_host'); localStorage.removeItem('pz_me'); } catch (e) {}
@@ -2986,6 +2989,7 @@ function netLobbyHTML() {
   let h = '<section><h3>🌐 Игра по сети</h3>';
   if (NET.on) {
     h += '<div class="hint">Комната <b style="color:var(--acc);font-size:18px;letter-spacing:.15em">' + esc(NET.room) + '</b> · ' + (NET.role === 'host' ? 'ты создатель' : 'ты участник') + '</div>';
+    h += '<div id="netroster" style="margin:8px 0">' + rosterHTML() + '</div>';
     h += '<button class="btn alt" onclick="netCopy()">📋 Скопировать ссылку-приглашение</button><button class="btn alt" onclick="netLeave()">Выйти из комнаты</button>';
     if (NET.role === 'host') h += '<div class="hint">Друзья заходят по ссылке или вводят код, создают своих героев. Каждый ходит со своего устройства. Можно добавить и героев на этом устройстве.</div>';
   } else {
@@ -3007,7 +3011,9 @@ function netBar() {
   let t = '🌐 <b>' + esc(NET.room) + '</b> · ' + (p ? (mine ? '<span class="me">✅ твой ход: ' + esc(p.name) + '</span>' : '⏳ ходит ' + esc(p.name)) : (G.screen === 'end' ? 'игра окончена' : 'лобби')) + (NET.msg ? ' · ' + esc(NET.msg) : '');
   const off = p && NET.online && p.owner !== NET.id && NET.online.indexOf(p.owner) < 0;
   if (off) t += ' · ⚠ не в сети';
-  b.innerHTML = '<span>' + t + '</span>' + (NET.role === 'host' && p && !mine ? '<button onclick="netSkip()">⏭ пропустить</button>' : '');
+  const rs = NET.roster || [], cnt = k => rs.filter(r => r.st === k).length;
+  b.innerHTML = '<span>' + t + '</span><span style="display:flex;gap:6px;align-items:center">' + (NET.role === 'host' && p && !mine ? '<button onclick="netSkip()">⏭ пропуск</button>' : '') + '<button onclick="netRoOpen()">👥 ' + cnt('online') + '/' + rs.length + '</button></span>';
+  netRoPaint();
   document.body.classList.toggle('wait', !!p && !mine);
 }
 function netSkip() {
@@ -3044,15 +3050,68 @@ function netClientMsg(m) {
   const msg = m.msg || m;
   if (msg.t === 'snap') {
     const o = JSON.parse(msg.s); if (o.seq <= NET.seq && !o.reset) { /* старый снимок */ }
-    NET.seq = o.seq; netLoad(o, false); (o.fx || []).forEach(e => q(e)); render();
+    const first = !NET.gotSnap; NET.gotSnap = true; NET.seq = o.seq; netLoad(o, false); (o.fx || []).forEach(e => q(e)); render(); if (first) netSend({ t: 'ready' });
   } else if (msg.t === 'toast') toast(msg.text);
+  else if (msg.t === 'roster') { NET.roster = msg.list || []; netBar(); }
+  else if (msg.t === 'pong') { NET.myMs = Date.now() - msg.ts; netSend({ t: 'rtt', ms: Math.min(9999, NET.myMs) }); }
+}
+
+/* ===== участники: кто в сети, кто грузится, кто вышел, пинг ===== */
+const RST = { online: ['🟢', 'в сети'], loading: ['🟡', 'загружается'], left: ['🔴', 'вышел'] };
+function netMyName() { try { const u = tg && tg.initDataUnsafe && tg.initDataUnsafe.user; return u && u.first_name ? String(u.first_name).slice(0, 20) : ''; } catch (e) { return ''; } }
+function msCls(ms) { return ms == null ? 'n' : ms < 120 ? 'g' : ms < 300 ? 'y' : 'r'; }
+function rosterHTML() {
+  const rs = NET.roster || [];
+  if (!rs.length) return '<div class="hint">Список участников появится, когда соединение установится…</div>';
+  return rs.map(r => {
+    const st = RST[r.st] || RST.left, you = r.id === NET.id;
+    return '<div class="ro"><span>' + st[0] + '</span><div class="rn"><b>' + esc(r.n) + (r.host ? ' 👑' : '') + (you ? ' <span style="color:var(--grn)">(вы)</span>' : '') + '</b><small>' + st[1] + (r.h && r.h.length ? ' · герой: ' + esc(r.h.join(', ')) : r.st === 'online' ? ' · героя пока нет' : '') + '</small></div><span class="ms ' + msCls(r.ms) + '">' + (r.ms == null ? '— мс' : r.ms + ' мс') + '</span></div>';
+  }).join('');
+}
+function netRoPaint() {
+  const a = document.getElementById('netroster'); if (a) a.innerHTML = rosterHTML();
+  let m = document.getElementById('netmodal');
+  if (!NET.roOpen) { if (m) m.remove(); return; }
+  if (!m) { m = document.createElement('div'); m.id = 'netmodal'; m.className = 'modal'; m.style.zIndex = 70; m.setAttribute('onclick', 'netRoClose()'); document.body.appendChild(m); }
+  m.innerHTML = '<div class="sheet" onclick="event.stopPropagation()"><button class="x" onclick="netRoClose()">✕</button><h2>👥 Участники · ' + esc(NET.room) + '</h2>' + rosterHTML() + '<div class="hint" style="margin-top:8px">Пинг — задержка до создателя комнаты. До 120 мс — отлично, до 300 — нормально, выше — будут задержки.</div><button class="btn alt" onclick="netRoClose()">Закрыть</button></div>';
+}
+function netRoOpen() { NET.roOpen = true; netRoPaint(); }
+function netRoClose() { NET.roOpen = false; netRoPaint(); }
+function netRosterBuild() {
+  const now = Date.now(), rows = [{ id: NET.id, host: true, n: netMyName() || 'Создатель', st: 'online', ms: NET.hostMs }], on = NET.online || [];
+  (NET.members || []).forEach((id, i) => {
+    if (id === NET.id) return;
+    const st = on.indexOf(id) >= 0 ? (NET.ready.has(id) ? 'online' : 'loading') : (NET.seen.has(id) ? 'left' : 'loading'), r = NET.rtt[id];
+    rows.push({ id, n: NET.names[id] || 'Игрок ' + (i + 1), st, ms: st === 'online' && r && now - r.at < 15000 ? r.ms : null });
+  });
+  rows.forEach(r => { r.h = G.players.filter(p => p.owner === r.id).map(p => p.name); });
+  return rows;
+}
+function netRosterTick() {
+  if (NET.role !== 'host') return;
+  const rows = netRosterBuild(), js = JSON.stringify(rows);
+  NET.roster = rows; if (js === NET.rosterJson) return;
+  NET.rosterJson = js; netSend({ t: 'roster', list: rows }); netBar();
+}
+function netTick() {
+  if (!NET.on) return; NET.tk++;
+  if (NET.role === 'host') {
+    if (NET.tk % 2 === 1) { const t0 = Date.now(); fetch(NET.srv + '/api/ping').then(r => r.json()).then(() => { NET.hostMs = Date.now() - t0; }).catch(() => { NET.hostMs = null; }); }
+    netRosterTick();
+  } else if (NET.tk % 2 === 0) netSend({ t: 'ping', ts: Date.now() });
 }
 function netTo(id, msg) { netSend(msg, id); }
 /* сообщения от участников: проверяем всё, ничему не верим */
 function netHostMsg(m) {
   const from = m.from, msg = m.msg || {};
-  if (from === 'server') { if (msg.t === 'presence') { NET.online = msg.on || []; netBar(); } return; }
-  if (msg.t === 'hello') { netSchedule(0); return; }
+  if (from === 'server') {
+    if (msg.t === 'presence') { NET.online = msg.on || []; NET.members = msg.members || []; NET.online.forEach(i => NET.seen.add(i)); [...NET.ready].forEach(i => { if (NET.online.indexOf(i) < 0) NET.ready.delete(i); }); netRosterTick(); netBar(); }
+    return;
+  }
+  if (msg.t === 'hello') { if (typeof msg.name === 'string' && msg.name) NET.names[from] = msg.name.slice(0, 20); NET.ready.delete(from); netSchedule(0); netRosterTick(); return; }
+  if (msg.t === 'ready') { NET.ready.add(from); netRosterTick(); return; }
+  if (msg.t === 'ping') { netTo(from, { t: 'pong', ts: +msg.ts || 0 }); return; }
+  if (msg.t === 'rtt') { NET.rtt[from] = { ms: Math.max(0, +msg.ms | 0), at: Date.now() }; return; }
   if (msg.t === 'addHero') { netAddHero(from, msg.d); return; }
   if (msg.t === 'removeHero') {
     if (G.screen !== 'lobby') return; const i = msg.i | 0, p = G.players[i];

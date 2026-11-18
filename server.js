@@ -36,7 +36,7 @@ function body(req) {
   });
 }
 function sse(res, o) { try { res.write('data: ' + JSON.stringify(o) + '\n\n'); } catch (e) {} }
-function presence(r) { if (r.host) sse(r.host, { from: 'server', msg: { t: 'presence', on: [...r.conns.keys()] } }); }
+function presence(r) { if (r.host) sse(r.host, { from: 'server', msg: { t: 'presence', on: [...r.conns.keys()], members: [...r.members] } }); }
 function limited(ip) {
   const now = Date.now(), h = hits.get(ip) || { t: now, n: 0 };
   if (now - h.t > 10000) { h.t = now; h.n = 0; } h.n++; hits.set(ip, h); return h.n > 400;
@@ -77,6 +77,7 @@ http.createServer(async (req, res) => {
       const id = who(b.init, b.id); if (!id) return json(res, 401, { err: 'Нужна авторизация Telegram' });
       if (id !== r.hostId && !r.members.has(id) && r.members.size >= MAX_MEMBERS) return json(res, 409, { err: 'Комната заполнена' });
       if (id !== r.hostId) r.members.add(id);
+      presence(r);
       r.last = Date.now(); return json(res, 200, { id });
     }
     if (u.pathname === '/api/send') {
