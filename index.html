@@ -24,7 +24,7 @@ body[data-we="fair"] #wfx{background:radial-gradient(ellipse at 50% 0%,rgba(255,
 .tree ul{list-style:none;margin:2px 0 2px 12px;padding-left:12px;border-left:1px dashed var(--line)}.tree>ul{margin-left:0;border-left:0;padding-left:0}.tree li{position:relative;margin:4px 0}.tree ul li::before{content:'';position:absolute;left:-12px;top:17px;width:10px;border-top:1px dashed var(--line)}.tree>ul>li::before{display:none}
 .tnode{font:inherit;font-size:14px;color:var(--mut);background:var(--card2);border:1px solid var(--line);border-radius:10px;padding:6px 10px;cursor:pointer;opacity:.75;text-align:left}.tnode.can{color:var(--acc);border-color:var(--acc);opacity:1}.tnode.done{color:var(--grn);border-color:var(--grn);background:#12261a;opacity:1}.tnode.sel{box-shadow:0 0 0 2px var(--acc);opacity:1}
 .tgrp{display:inline-block;font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--mut);padding:6px 0}
-#netbar{position:fixed;top:0;left:0;right:0;z-index:60;display:flex;gap:8px;align-items:center;justify-content:space-between;padding:6px 12px;background:#14100d;border-bottom:1px solid var(--line);font-size:13px;color:var(--mut)}#netbar b{color:var(--acc)}#netbar .me{color:var(--grn)}#netbar button{font:inherit;font-size:12px;color:var(--acc);background:none;border:1px solid var(--acc);border-radius:8px;padding:2px 8px;cursor:pointer}body.wait #app .btn,body.wait #app .chip{opacity:.6}
+#netbar{position:fixed;top:0;left:0;right:0;z-index:60;display:flex;gap:8px;align-items:center;justify-content:space-between;padding:6px 12px;background:#14100d;border-bottom:1px solid var(--line);font-size:13px;color:var(--mut)}#netbar>span:first-child{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}#netbar>span:last-child{flex:none}#netbar b{color:var(--acc)}#netbar .me{color:var(--grn)}#netbar button{font:inherit;font-size:12px;color:var(--acc);background:none;border:1px solid var(--acc);border-radius:8px;padding:2px 8px;cursor:pointer}body.wait #app .btn,body.wait #app .chip{opacity:.6}
 .ro{display:flex;align-items:center;gap:8px;padding:8px 0;border-top:1px solid var(--line);font-size:14px}.ro:first-child{border-top:0}.ro .rn{flex:1;min-width:0}.ro .rn b{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.ro .rn small{color:var(--mut)}.ro .ms{font-variant-numeric:tabular-nums;font-size:13px;white-space:nowrap}.ms.g{color:var(--grn)}.ms.y{color:#e0b43f}.ms.r{color:#e0553f}.ms.n{color:var(--mut)}#netbar .rb{cursor:pointer}
 .nin{width:100%;box-sizing:border-box;margin:6px 0;padding:10px;border-radius:10px;border:1px solid var(--line);background:var(--card2);color:inherit;font:inherit}
 .ar{display:flex;gap:10px;align-items:center;padding:8px 10px;border:1px solid var(--line);border-radius:10px;margin:6px 0;background:var(--card2)}.ar.lock{opacity:.6}.ar .ai{font-size:24px;width:30px;text-align:center}
@@ -37,7 +37,7 @@ body[data-we="fair"] #wfx{background:radial-gradient(ellipse at 50% 0%,rgba(255,
 #flash{position:fixed;inset:0;pointer-events:none;z-index:80;opacity:0}
 #flash.go{animation:flash .55s ease-out}
 @keyframes flash{0%{opacity:.5}100%{opacity:0}}
-#app{position:relative;z-index:2;max-width:520px;margin:0 auto;padding-block:14px 56px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+#app{position:relative;z-index:2;max-width:520px;margin:0 auto;padding-block:14px 90px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
 h1{font-family:var(--head);font-weight:800;letter-spacing:.16em;color:var(--acc);text-align:center;margin:10px 0 2px;font-size:27px;text-shadow:0 0 22px rgba(217,168,78,.35)}
 h2{font-family:var(--head);color:var(--acc);margin:0 0 10px;font-size:20px;letter-spacing:.06em}
 h3{margin:0 0 8px;font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--mut);font-weight:700}
@@ -54,7 +54,7 @@ section,.card{background:linear-gradient(180deg,#1b1625,#15111c);border:1px soli
 .btn.red{background:linear-gradient(180deg,#d9573f,#962d1d);color:#fff}
 .btn.pur{background:linear-gradient(180deg,#a374e0,#6b3fb0);color:#fff}
 .btn.grn{background:linear-gradient(180deg,#5fc487,#2f8350);color:#fff}
-.tip{position:fixed;left:0;right:0;margin:0 auto;width:max-content;bottom:max(24px,env(safe-area-inset-bottom,0px));transform:translateY(30px);max-width:min(calc(100vw - 32px),420px);box-sizing:border-box;background:#2a1d3a;color:#fff;border:1px solid var(--acc);padding:12px 16px;border-radius:12px;font-size:14px;line-height:1.4;box-shadow:0 8px 30px rgba(0,0,0,.6);opacity:0;pointer-events:none;transition:.25s;z-index:999;text-align:center}
+.tip{position:fixed;left:0;right:0;margin:0 auto;width:max-content;bottom:calc(max(24px,env(safe-area-inset-bottom,0px)) + 64px);transform:translateY(30px);max-width:min(calc(100vw - 32px),420px);box-sizing:border-box;background:#2a1d3a;color:#fff;border:1px solid var(--acc);padding:12px 16px;border-radius:12px;font-size:14px;line-height:1.4;box-shadow:0 8px 30px rgba(0,0,0,.6);opacity:0;pointer-events:none;transition:.25s;z-index:999;text-align:center}
 .tip.show{opacity:1;transform:translateY(0)}
 .miss{margin-top:12px;padding:10px 12px;border-radius:10px;background:rgba(217,168,78,.12);border:1px dashed var(--acc);font-size:14px;line-height:1.45}
 section.warn{animation:warn 1.4s;border-radius:12px}
@@ -176,7 +176,7 @@ input[type=text]{width:100%;padding:12px;border-radius:10px;border:1px solid var
 .modal{position:fixed;inset:0;z-index:60;background:rgba(5,3,9,.78);display:flex;align-items:flex-end;justify-content:center}
 .modal.anim{animation:fade .2s}
 @keyframes fade{from{opacity:0}}
-.sheet{width:100%;max-width:520px;max-height:90vh;overflow-y:auto;background:linear-gradient(180deg,#1d1727,#130e19);border:1px solid var(--line);border-bottom:0;border-radius:18px 18px 0 0;padding:16px max(16px,env(safe-area-inset-left,0px)) calc(18px + env(safe-area-inset-bottom,0px))}
+.sheet{width:100%;max-width:520px;max-height:90vh;max-height:calc(100dvh - 16px);overflow-y:auto;overscroll-behavior:contain;background:linear-gradient(180deg,#1d1727,#130e19);border:1px solid var(--line);border-bottom:0;border-radius:18px 18px 0 0;padding:16px max(16px,env(safe-area-inset-left,0px)) calc(70px + env(safe-area-inset-bottom,0px))}
 .modal.anim .sheet{animation:slide .25s ease-out}
 @keyframes slide{from{transform:translateY(40px);opacity:0}}
 .sheet .x{float:right;border:1px solid var(--line);background:var(--card2);color:var(--txt);border-radius:9px;width:34px;height:34px;font-size:16px;cursor:pointer}
@@ -211,8 +211,8 @@ input[type=text]{width:100%;padding:12px;border-radius:10px;border:1px solid var
 @keyframes spin{to{transform:rotate(360deg)}}
 @keyframes land{0%{transform:scale(1.5)}60%{transform:scale(.92)}100%{transform:scale(1)}}
 .dice-res{font:800 18px var(--head);color:var(--acc);min-height:24px;letter-spacing:.08em}
-.banner{position:fixed;left:0;right:0;top:34%;text-align:center;animation:ban 1.5s ease-out forwards;pointer-events:none}
-.banner b{display:block;font:800 40px var(--head);letter-spacing:.14em;color:#fff;text-shadow:0 0 24px var(--red),0 3px 10px #000}
+.banner{position:fixed;left:0;right:0;top:34%;text-align:center;padding:14px 12px;box-sizing:border-box;background:linear-gradient(90deg,transparent,rgba(8,4,14,.86) 14%,rgba(8,4,14,.86) 86%,transparent);animation:ban 1.4s ease-out forwards;pointer-events:none;z-index:95}
+.banner b{display:block;font:800 clamp(24px,8vw,40px) var(--head);overflow-wrap:anywhere;letter-spacing:.1em;color:#fff;text-shadow:0 0 24px var(--red),0 3px 10px #000}
 .banner span{font-size:15px;color:#ffd9d2}
 @keyframes ban{0%{opacity:0;transform:scale(1.5)}15%{opacity:1;transform:scale(1)}80%{opacity:1}100%{opacity:0;transform:scale(1.05)}}
 .toast{position:fixed;left:50%;top:calc(env(safe-area-inset-top,0px) + 70px);transform:translateX(-50%);display:flex;align-items:center;gap:12px;padding:10px 16px;border-radius:14px;background:#17121f;border:2px solid var(--common);animation:toast 2.4s ease-out forwards;pointer-events:none;max-width:88vw}
@@ -979,7 +979,7 @@ function showDice(sides, label, v, cb) {
 }
 function rollThen(sides, label, fn) {
   if (G.busy) return;
-  if (!FX_ON) { fn(); return; }
+  if (!FX_ON) { const v0 = 1 + Math.floor(Math.random() * sides); q({ t: 'dice', sides, label, v: v0 }); FORCED = v0; FORCED_N = sides; try { fn(); } finally { FORCED = null; } return; }
   const v = 1 + Math.floor(Math.random() * sides);
   G.busy = true;
   showDice(sides, label, v, () => {
@@ -995,6 +995,13 @@ function walk(p, steps, done) {
   };
   setTimeout(step, 150);
 }
+const FXS = { banner: { q: [], busy: false, ms: 1400 }, toast: { q: [], busy: false, ms: 2400 } };
+function fxSeq(kind, make) {
+  const st = FXS[kind]; st.q.push(make); if (st.q.length > 3) st.q.shift();
+  if (st.busy) return; st.busy = true;
+  const next = () => { const m = st.q.shift(); if (!m) { st.busy = false; return; } let el = null; try { el = m(); } catch (_) {} setTimeout(() => { if (el) el.remove(); next(); }, st.ms); };
+  next();
+}
 function runFx(e) {
   const fx = document.getElementById('fx');
   if (e.t === 'float') {
@@ -1009,13 +1016,13 @@ function runFx(e) {
   } else if (e.t === 'flash') {
     const f = document.getElementById('flash'); f.style.background = e.col; f.classList.remove('go'); void f.offsetWidth; f.classList.add('go');
   } else if (e.t === 'banner') {
-    const b = document.createElement('div'); b.className = 'banner'; b.innerHTML = '<b>' + esc(e.text) + '</b><span>' + esc(e.sub || '') + '</span>';
-    fx.appendChild(b); setTimeout(() => b.remove(), 1500);
+    fxSeq('banner', () => { const b = document.createElement('div'); b.className = 'banner'; b.innerHTML = '<b>' + esc(e.text) + '</b><span>' + esc(e.sub || '') + '</span>'; fx.appendChild(b); return b; });
   } else if (e.t === 'toast') {
-    const it = ITEMS[e.id], d = document.createElement('div'); d.className = 'toast r-' + it.rarity;
-    d.innerHTML = '<i>' + it.i + '</i><div><small>Найдено · ' + RAR[it.rarity] + '</small><b>' + esc(it.n) + '</b></div>';
-    fx.appendChild(d); setTimeout(() => d.remove(), 2500);
+    const it = ITEMS[e.id]; if (!it) return;
+    fxSeq('toast', () => { const d = document.createElement('div'); d.className = 'toast r-' + it.rarity; d.innerHTML = '<i>' + it.i + '</i><div><small>Найдено · ' + RAR[it.rarity] + '</small><b>' + esc(it.n) + '</b></div>'; fx.appendChild(d); return d; });
     if (it.rarity === 'epic' || it.rarity === 'legendary') burst(it.rarity === 'epic' ? '#b574f0' : '#f0b84a', 60);
+  } else if (e.t === 'dice') {
+    if (!document.querySelector('.dice-ov')) showDice(e.sides, e.label, e.v, () => {});
   } else if (e.t === 'burst') burst(e.col, e.n || 50);
 }
 function afterRender() {
@@ -2622,7 +2629,7 @@ function lobbyHTML() {
     h += '<div class="hero"><div><b style="color:' + p.color + '">' + esc(p.name) + '</b><div class="small">' + RACES[p.race].i + ' ' + RACES[p.race].n + ' · ' + CLASSES[p.cls].i + ' ' + CLASSES[p.cls].n + ' · ' + p.weapon.n + '</div></div><span class="chip" onclick="removeHero(' + i + ')">✕</span></div>';
   });
   if (G.players.length < MAXP && !(NET.role === 'client' && G.players.some(p => p.owner === NET.id))) h += '<button id="addhero" class="btn alt' + (G.players.length ? '' : ' pulse') + '" onclick="newDraft()">+ Создать героя</button>';
-  h += '</section>' + (G.players.length ? '' : '<div class="miss">👆 Сначала создай хотя бы одного героя, потом можно начинать.</div>') + (NET.role === 'client' ? '<div class="hint">⏳ Ждём, пока создатель комнаты начнёт приключение.</div>' : '<button class="btn" onclick="startGame()">Начать приключение</button>');
+  h += '</section>' + (G.players.length ? '' : '<div class="miss">👆 Сначала создай хотя бы одного героя, потом можно начинать.</div>') + (NET.on && NET.creator !== NET.id ? '<div class="hint">⏳ Ждём, пока создатель комнаты начнёт приключение.</div>' : '<button class="btn" onclick="startGame()">Начать приключение</button>');
   return h;
 }
 
@@ -2930,47 +2937,44 @@ async function netApi(path, body) {
 }
 function netSend(msg, to) {
   const body = { room: NET.room, id: NET.id, msg, to: to || undefined };
-  NET.sq = NET.sq.then(() => netApi('/api/send', body)).catch(e => { NET.msg = 'Нет связи: ' + e.message; netBar(); });
+  NET.sq = NET.sq.then(() => netApi('/api/send', body)).catch(e => { NET.msg = 'Нет связи: ' + e.message; netBar(); if (/не найден/i.test(e.message)) netCheckRoom(); });
 }
 function netStart(role, room, id) {
-  NET.on = true; NET.role = role; NET.room = room; NET.id = id; NET.msg = ''; NET.online = null; NET.wasMine = false; NET.seq = 0;
+  NET.on = true; NET.dead = false; NET.role = role; NET.room = room; NET.id = id; NET.msg = ''; NET.online = null; NET.wasMine = false; NET.seq = 0;
   if (NET.es) NET.es.close();
   const es = new EventSource(NET.srv + '/api/events?room=' + encodeURIComponent(room) + '&id=' + encodeURIComponent(id) + '&init=' + encodeURIComponent(tg && tg.initData || ''));
   NET.es = es;
   NET.members = []; NET.ready = new Set(); NET.seen = new Set(); NET.rtt = {}; NET.names = {}; NET.roster = []; NET.rosterJson = ''; NET.hostMs = null; NET.myMs = null; NET.tk = 0;
-  es.onopen = () => { NET.msg = ''; netBar(); if (role === 'client') netSend({ t: 'hello', name: netMyName() }); else netSchedule(); };
-  es.onerror = () => { NET.msg = 'переподключение…'; NET.gotSnap = false; netBar(); };
+  es.onopen = () => { NET.msg = ''; NET.errs = 0; netBar(); if (role === 'client') netSend({ t: 'hello', name: netMyName() }); else netSchedule(); };
+  es.onerror = () => { if (NET.dead) return; NET.msg = 'переподключение…'; NET.gotSnap = false; NET.errs = (NET.errs || 0) + 1; netBar(); if (es.readyState === 2 || NET.errs % 3 === 0) netCheckRoom(); };
   es.onmessage = e => { let m; try { m = JSON.parse(e.data); } catch (_) { return; } NET.role === 'host' ? netHostMsg(m) : netClientMsg(m); };
   clearInterval(NET.tm); NET.tm = setInterval(netTick, 2500); netTick();
   lsSet('pz_srv', NET.srv); lsSet('pz_me', JSON.stringify({ role, room, id }));
   document.body.style.paddingTop = '38px'; render();
 }
+function netMyId() { let me = null; try { me = JSON.parse(lsGet('pz_me')); } catch (e) {} return ssGet('pz_id') || (me && me.id) || ''; }
 async function netHost() {
   NET.msg = 'Создаю комнату…'; render();
   try {
-    const j = await netApi('/api/create', { id: ssGet('pz_id') || undefined });
-    ssSet('pz_id', j.id); G.players.forEach(p => { if (!p.owner) p.owner = j.id; });
-    netStart('host', j.code, j.id);
+    const j = await netApi('/api/create', { id: netMyId() || undefined });
+    ssSet('pz_id', j.id); NET.creator = j.id; G = newGame();
+    netStart('client', j.code, j.id);
   } catch (e) { NET.msg = 'Не вышло: ' + e.message; render(); }
+}
+async function netCheckRoom() {
+  if (NET.chk) return; NET.chk = true;
+  try { await netApi('/api/join', { room: NET.room, id: NET.id }); NET.chk = false; if (NET.es && NET.es.readyState === 2 && !NET.dead) netStart(NET.role, NET.room, NET.id); } catch (e) {
+    NET.chk = false;
+    if (/не найден/i.test(e.message)) { NET.dead = true; NET.msg = 'комната закрыта (сервер перезапускался)'; if (NET.es) NET.es.close(); clearInterval(NET.tm); try { localStorage.removeItem('pz_me'); } catch (_) {} netBar(); }
+  }
 }
 async function netJoin() {
   const code = (NET.codeIn || '').toUpperCase().trim();
   if (!code) { NET.msg = 'Введи код комнаты.'; render(); return; }
   NET.msg = 'Подключаюсь…'; render();
   try {
-    const j = await netApi('/api/join', { room: code, id: ssGet('pz_id') || undefined });
+    const j = await netApi('/api/join', { room: code, id: netMyId() || undefined });
     ssSet('pz_id', j.id); G = newGame(); netStart('client', code, j.id);
-  } catch (e) { NET.msg = 'Не вышло: ' + e.message; render(); }
-}
-async function netResume() {
-  let sv = null; try { sv = JSON.parse(lsGet('pz_host')); } catch (e) {}
-  if (!sv) return;
-  NET.srv = sv.srv; NET.msg = 'Восстанавливаю комнату…'; render();
-  try {
-    netLoad(JSON.parse(sv.s), true);
-    let j; try { j = await netApi('/api/create', { id: sv.id, code: sv.room }); } catch (e) { j = await netApi('/api/create', { id: sv.id }); }
-    ssSet('pz_id', j.id); G.players.forEach(p => { if (p.owner === sv.id) p.owner = j.id; });
-    netStart('host', j.code, j.id);
   } catch (e) { NET.msg = 'Не вышло: ' + e.message; render(); }
 }
 function netLeave() {
@@ -2991,15 +2995,13 @@ function netLobbyHTML() {
     h += '<div class="hint">Комната <b style="color:var(--acc);font-size:18px;letter-spacing:.15em">' + esc(NET.room) + '</b> · ' + (NET.role === 'host' ? 'ты создатель' : 'ты участник') + '</div>';
     h += '<div id="netroster" style="margin:8px 0">' + rosterHTML() + '</div>';
     h += '<button class="btn alt" onclick="netCopy()">📋 Скопировать ссылку-приглашение</button><button class="btn alt" onclick="netLeave()">Выйти из комнаты</button>';
-    if (NET.role === 'host') h += '<div class="hint">Друзья заходят по ссылке или вводят код, создают своих героев. Каждый ходит со своего устройства. Можно добавить и героев на этом устройстве.</div>';
+    if (NET.creator === NET.id) h += '<div class="hint">Друзья заходят по ссылке или вводят код и создают героев. Комната живёт на сервере: можно сворачивать игру и заходить обратно.</div>';
   } else {
     h += '<div class="hint">Каждый играет со своего телефона: создатель запускает комнату, остальные заходят по коду.</div>';
     h += '<input class="nin" placeholder="Адрес сервера (https://…)" value="' + esc(NET.srv) + '" oninput="NET.srv=this.value.trim().replace(/\\/+$/,\'\')">';
     h += '<button class="btn alt" onclick="netHost()">🏰 Создать комнату</button>';
     h += '<input class="nin" placeholder="Код комнаты" maxlength="8" value="' + esc(NET.codeIn) + '" oninput="NET.codeIn=this.value.toUpperCase()">';
     h += '<button class="btn alt" onclick="netJoin()">🚪 Войти по коду</button>';
-    let sv = null; try { sv = JSON.parse(lsGet('pz_host')); } catch (e) {}
-    if (sv && sv.room) h += '<button class="btn alt" onclick="netResume()">↩️ Продолжить свою комнату ' + esc(sv.room) + '</button>';
   }
   if (NET.msg) h += '<div class="hint" style="color:var(--acc)">' + esc(NET.msg) + '</div>';
   return h + '</section>';
@@ -3012,10 +3014,11 @@ function netBar() {
   const off = p && NET.online && p.owner !== NET.id && NET.online.indexOf(p.owner) < 0;
   if (off) t += ' · ⚠ не в сети';
   const rs = NET.roster || [], cnt = k => rs.filter(r => r.st === k).length;
-  b.innerHTML = '<span>' + t + '</span><span style="display:flex;gap:6px;align-items:center">' + (NET.role === 'host' && p && !mine ? '<button onclick="netSkip()">⏭ пропуск</button>' : '') + '<button onclick="netRoOpen()">👥 ' + cnt('online') + '/' + rs.length + '</button></span>';
+  b.innerHTML = '<span>' + t + '</span><span style="display:flex;gap:6px;align-items:center">' + (NET.dead ? '<button onclick="netLeave()">✖ выйти</button>' : '') + (NET.creator === NET.id && p && !mine ? '<button onclick="netSkipReq()">⏭ пропуск</button>' : '') + '<button onclick="netRoOpen()">👥 ' + cnt('online') + '/' + rs.length + '</button></span>';
   netRoPaint();
   document.body.classList.toggle('wait', !!p && !mine);
 }
+function netSkipReq() { netSend({ t: 'act', fn: 'netSkip', args: [] }); toast('Ход пропущен.'); }
 function netSkip() {
   if (NET.role !== 'host' || G.screen !== 'game') return;
   const p = G.players[G.cur]; if (!p || p.owner === NET.id) return;
@@ -3033,7 +3036,7 @@ function netTurnWatch() {
 function netSnap() {
   const items = {}; Object.keys(ITEMS).forEach(k => { if (k.indexOf('cw_') === 0) items[k] = ITEMS[k]; });
   const g = Object.assign({}, G, { draft: null, help: false, helpFresh: false, chronOpen: false, chronFresh: false, prologue: G.screen === 'game', prologueFresh: false, busy: false, walking: false, screen: G.screen === 'create' ? 'lobby' : G.screen });
-  return JSON.stringify({ G: g, items, CWN, fx: NET.fx.splice(0), seq: ++NET.seq });
+  return JSON.stringify({ G: g, items, CWN, creator: NET.creator || null, fx: NET.fx.splice(0), seq: ++NET.seq });
 }
 function netLoad(o, asHost) {
   Object.keys(ITEMS).forEach(k => { if (k.indexOf('cw_') === 0) delete ITEMS[k]; });
@@ -3050,7 +3053,7 @@ function netClientMsg(m) {
   const msg = m.msg || m;
   if (msg.t === 'snap') {
     const o = JSON.parse(msg.s); if (o.seq <= NET.seq && !o.reset) { /* старый снимок */ }
-    const first = !NET.gotSnap; NET.gotSnap = true; NET.seq = o.seq; netLoad(o, false); (o.fx || []).forEach(e => q(e)); render(); if (first) netSend({ t: 'ready' });
+    const first = !NET.gotSnap; NET.gotSnap = true; NET.seq = o.seq; NET.creator = o.creator || null; netLoad(o, false); (o.fx || []).forEach(e => q(e)); render(); if (first) netSend({ t: 'ready' });
   } else if (msg.t === 'toast') toast(msg.text);
   else if (msg.t === 'roster') { NET.roster = msg.list || []; netBar(); }
   else if (msg.t === 'pong') { NET.myMs = Date.now() - msg.ts; netSend({ t: 'rtt', ms: Math.min(9999, NET.myMs) }); }
@@ -3078,11 +3081,11 @@ function netRoPaint() {
 function netRoOpen() { NET.roOpen = true; netRoPaint(); }
 function netRoClose() { NET.roOpen = false; netRoPaint(); }
 function netRosterBuild() {
-  const now = Date.now(), rows = [{ id: NET.id, host: true, n: netMyName() || 'Создатель', st: 'online', ms: NET.hostMs }], on = NET.online || [];
+  const now = Date.now(), rows = NET.srvMode ? [] : [{ id: NET.id, host: true, n: netMyName() || 'Создатель', st: 'online', ms: NET.hostMs }], on = NET.online || [];
   (NET.members || []).forEach((id, i) => {
     if (id === NET.id) return;
     const st = on.indexOf(id) >= 0 ? (NET.ready.has(id) ? 'online' : 'loading') : (NET.seen.has(id) ? 'left' : 'loading'), r = NET.rtt[id];
-    rows.push({ id, n: NET.names[id] || 'Игрок ' + (i + 1), st, ms: st === 'online' && r && now - r.at < 15000 ? r.ms : null });
+    rows.push({ id, host: id === NET.creator, n: NET.names[id] || 'Игрок ' + (i + 1), st, ms: st === 'online' && r && now - r.at < 15000 ? r.ms : null });
   });
   rows.forEach(r => { r.h = G.players.filter(p => p.owner === r.id).map(p => p.name); });
   return rows;
@@ -3115,14 +3118,22 @@ function netHostMsg(m) {
   if (msg.t === 'addHero') { netAddHero(from, msg.d); return; }
   if (msg.t === 'removeHero') {
     if (G.screen !== 'lobby') return; const i = msg.i | 0, p = G.players[i];
-    if (p && p.owner === from) { G.players.splice(i, 1); render(); }
+    if (p && (p.owner === from || from === NET.creator)) { G.players.splice(i, 1); render(); }
     return;
   }
   if (msg.t === 'act') {
-    const p = G.players[G.cur];
+    const p = G.players[G.cur], prim = a => a === null || ['string', 'number', 'boolean'].indexOf(typeof a) >= 0;
+    if (NET.srvMode && from === NET.creator && Array.isArray(msg.args) && msg.args.length <= 4 && msg.args.every(prim)) {
+      if (msg.fn === 'netSkip') { if (G.screen === 'game') { netSkip(); netSchedule(); } return; }
+      if (NET_LOBBY.has(msg.fn)) {
+        if (msg.fn === 'toLobby' ? G.screen !== 'end' : G.screen !== 'lobby') return;
+        if (msg.fn === 'startGame' && !G.players.length) return;
+        try { globalThis[msg.fn].apply(null, msg.args); } catch (e) { console.error(e); } netSchedule(); return;
+      }
+    }
     if (G.screen !== 'game' || !p || p.owner !== from || !NET_GAME.has(msg.fn) || !Array.isArray(msg.args) || msg.args.length > 4 || msg.args.some(a => !(a === null || ['string', 'number', 'boolean'].indexOf(typeof a) >= 0))) return;
     if (G.busy) { netTo(from, { t: 'toast', text: 'Подожди, идёт анимация…' }); return; }
-    try { window[msg.fn].apply(null, msg.args); } catch (e) { console.error(e); }
+    try { globalThis[msg.fn].apply(null, msg.args); } catch (e) { console.error(e); }
     netSchedule();
   }
 }
@@ -3156,10 +3167,15 @@ if (typeof document.addEventListener === 'function') document.addEventListener('
   if (NET_LOCAL.has(fn)) return;
   if (fn === 'removeHero') {
     if (NET.role === 'host') return; stop(); const i = +m[2];
-    if (G.players[i] && G.players[i].owner === NET.id) netSend({ t: 'removeHero', i }); else toast('Можно убрать только своего героя.');
+    if (G.players[i] && (G.players[i].owner === NET.id || NET.creator === NET.id)) netSend({ t: 'removeHero', i }); else toast('Можно убрать только своего героя.');
     return;
   }
-  if (NET_LOBBY.has(fn)) { if (NET.role === 'client') { stop(); toast('Это выбирает создатель комнаты.'); } return; }
+  if (NET_LOBBY.has(fn)) {
+    if (NET.role === 'host') return; stop();
+    if (NET.creator !== NET.id) { toast('Это выбирает создатель комнаты.'); return; }
+    let a2; try { a2 = new Function('return [' + m[2] + ']')(); } catch (e) { return; }
+    netSend({ t: 'act', fn, args: a2 }); return;
+  }
   if (!NET_GAME.has(fn)) return;
   const p = G.screen === 'game' && G.cur >= 0 ? G.players[G.cur] : null;
   if (!p || p.owner !== NET.id) { stop(); if (!/^close|^inv(Close|Sel)/.test(fn) && p) toast('Сейчас ходит ' + p.name + '.'); return; }
